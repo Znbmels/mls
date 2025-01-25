@@ -1,16 +1,16 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import TeacherViewSet, StudentViewSet, GroupViewSet, LessonViewSet, ErrorViewSet
+from .views import UserViewSet, TeacherViewSet, StudentViewSet, GroupViewSet, LessonViewSet, ErrorViewSet
 
-# Создание маршрутизатора и регистрация ViewSet
+# Создаем роутер
 router = DefaultRouter()
-router.register('teachers', TeacherViewSet, basename='teacher')
-router.register('students', StudentViewSet, basename='student')
-router.register('groups', GroupViewSet, basename='group')
-router.register('lessons', LessonViewSet, basename='lesson')
-router.register('errors', ErrorViewSet, basename='error')
+router.register(r'users', UserViewSet)
+router.register(r'teachers', TeacherViewSet)
+router.register(r'students', StudentViewSet)
+router.register(r'groups', GroupViewSet)
+router.register(r'lessons', LessonViewSet)
+router.register(r'errors', ErrorViewSet)
 
-# Подключение маршрутов маршрутизатора
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),  # Все маршруты для API
 ]
