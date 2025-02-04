@@ -12,5 +12,7 @@ router.register(r'lessons', LessonViewSet)
 router.register(r'errors', ErrorViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),  # Все маршруты для API
+    path('api/', include(router.urls)),  # Ваши API маршруты
+    path('auth/', include('djoser.urls')),  # Маршруты Djoser
+    path('auth/', include('djoser.urls.authtoken')),
 ]

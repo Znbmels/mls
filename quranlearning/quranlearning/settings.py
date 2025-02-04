@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-5i(&8n@*bn7&^9_9#%1hg63-k(9z1p-q96@6scih3y241_$%el
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*', 'qqqqqqqqqqqzzzz.pythonanywhere.com']  # Укажите свои хосты
+ALLOWED_HOSTS = ['*', 'qqqqqqqqqqqzzzz.pythonanywhere.com']  # мои хосты
 
 
 # Application definition
@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp1',  # Убедись, что приложение myapp1 подключено
+    'myapp1',  #  myapp1 подключено
     'rest_framework',
     'drf_yasg',
+    'rest_framework.authtoken',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'quranlearning.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],  # Добавьте директорию для пользовательских шаблонов, если нужно
+        'DIRS': [],  # Добавить директорию для пользовательских шаблонов, если нужно
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,9 +131,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # REST Framework configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+}
+
+DJOSER = {
+    'USER_CREATE_PASSWORD_RETYPE': True,  # Подтверждение пароля при регистрации
+    'SEND_ACTIVATION_EMAIL': True# Отключение отправки email
 }
 
 # Указывай кастом модель пользователя

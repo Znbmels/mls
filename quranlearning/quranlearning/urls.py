@@ -15,13 +15,14 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=[permissions.AllowAny],
 )
 
-urlpatterns = [
+urlpatterns = (
     path("admin/", admin.site.urls),  # Админка
     path("api/", include("myapp1.urls")),  # Основные API
     path("api/schema/", schema_view.without_ui(cache_timeout=0), name="schema"),  # JSON схема
-    path("api/docs/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),  # Swagger UI
-    path("api/redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="redoc"),  # Redoc UI
-]
+    path("api/swagger/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),  # Swagger UI
+    path("auth/", include("djoser.urls")),  # Маршруты Djoser (обычные аутентификации)
+    path("auth/token/", include("djoser.urls.authtoken")),  # Токены аутентификации
+)

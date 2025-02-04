@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         ('teacher', 'Teacher'),
         ('student', 'Student'),
+        ('admin', 'Admin'),
     )
     role = models.CharField(max_length=7, choices=ROLE_CHOICES, default='student')
 
@@ -13,6 +15,7 @@ class CustomUser(AbstractUser):
 
 # Модель преподавателя
 class Teacher(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)  # Добавили поле user
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
@@ -21,9 +24,9 @@ class Teacher(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-
 # Модель студента
 class Student(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=1)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
@@ -31,7 +34,6 @@ class Student(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-
 
 # Модель группы
 class Group(models.Model):
@@ -42,9 +44,9 @@ class Group(models.Model):
     def __str__(self):
         return self.name
 
-
-# Модель урока
+# Модель уроков
 class Lesson(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True, default=1) #связь с учителем
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     topic = models.CharField(max_length=200)
     date = models.DateTimeField()
@@ -54,8 +56,7 @@ class Lesson(models.Model):
     def __str__(self):
         return f"{self.topic} ({self.group.name})"
 
-
-# Модель ошибки
+# Модель ошибок обозначенный учителем
 class Error(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
@@ -63,4 +64,3 @@ class Error(models.Model):
 
     def __str__(self):
         return f"Ошибка {self.student.first_name} {self.student.last_name} в уроке {self.lesson.topic}"
-
