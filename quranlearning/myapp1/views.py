@@ -67,7 +67,7 @@ class LessonViewSet(ModelViewSet):
                     raise NotFound('Teacher profile not found.')
 
             # Если роль админа, показываем все уроки
-            return Lesson.objects.al
+            return self.queryset
 
 # ViewSet для ошибки
 class ErrorViewSet(viewsets.ModelViewSet):
